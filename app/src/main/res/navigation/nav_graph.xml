@@ -33,21 +33,7 @@
         android:name="com.example.virtualrunner.fragments.RunFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_record" >
-        <argument
-            android:name="argName"
-            app:argType="string" />
-        <argument
-            android:name="argDate"
-            app:argType="string" />
-        <argument
-            android:name="argTime"
-            app:argType="string" />
-        <argument
-            android:name="argDistance"
-            app:argType="float" />
-        <argument
-            android:name="argElevation"
-            app:argType="integer" />
+
     </fragment>
 
 </navigation>
