@@ -4,16 +4,43 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.2" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.4" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.6" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.8"/>
+
     <TextView
         android:id="@+id/nameView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="name"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/dateView"
         app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintWidth_default="wrap"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_default="wrap" />
 
     <TextView
         android:id="@+id/dateView"
@@ -21,10 +48,9 @@
         android:layout_height="wrap_content"
         android:text="date"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/nameView"
-        app:layout_constraintEnd_toStartOf="@+id/timeView"
         app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintWidth_default="wrap"/>
+        app:layout_constraintStart_toStartOf="@+id/guideline1"
+        app:layout_constraintWidth_default="wrap" />
 
     <TextView
         android:id="@+id/timeView"
@@ -32,10 +58,9 @@
         android:layout_height="wrap_content"
         android:text="time"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/dateView"
-        app:layout_constraintEnd_toStartOf="@+id/distanceView"
         app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintWidth_default="wrap"/>
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintWidth_default="wrap" />
 
     <TextView
         android:id="@+id/distanceView"
@@ -43,10 +68,9 @@
         android:layout_height="wrap_content"
         android:text="distance"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/timeView"
-        app:layout_constraintEnd_toStartOf="@+id/elevationView"
         app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintWidth_default="wrap"/>
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintWidth_default="wrap" />
 
     <TextView
         android:id="@+id/elevationView"
@@ -54,9 +78,8 @@
         android:layout_height="wrap_content"
         android:text="elevation"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/distanceView"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintWidth_default="wrap"/>
+        app:layout_constraintStart_toStartOf="@+id/guideline4"
+        app:layout_constraintWidth_default="wrap" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

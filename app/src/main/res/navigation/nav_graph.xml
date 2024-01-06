@@ -35,5 +35,13 @@
         tools:layout="@layout/fragment_record" >
 
     </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.virtualrunner.fragments.SettingsFragment"
+        android:label="SettingsFragment" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.virtualrunner.fragments.ProfileFragment"
+        android:label="ProfileFragment" />
 
 </navigation>
