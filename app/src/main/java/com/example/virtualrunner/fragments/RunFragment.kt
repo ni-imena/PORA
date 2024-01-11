@@ -22,8 +22,6 @@ class RunFragment : Fragment() {
     private val sharedViewModel: SharedViewModel by activityViewModels()
 
     private lateinit var map: MapView
-    private val run: Run = Run("name", "date", "time", 0.0f, 0)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
