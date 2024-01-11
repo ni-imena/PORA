@@ -8,8 +8,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
+import feri.pora.volunteerhub.SharedViewModel
 
-class MyAdapter(private val context: Context, private val items: List<Run>, private val navController: NavController) : RecyclerView.Adapter<MyViewHolder>() {
+class MyAdapter(private val context: Context, private val sharedViewModel: SharedViewModel,
+                private val items: List<Run>, private val navController: NavController) : RecyclerView.Adapter<MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         return MyViewHolder(LayoutInflater.from(context).inflate(R.layout.run_view, parent, false))
@@ -24,6 +26,7 @@ class MyAdapter(private val context: Context, private val items: List<Run>, priv
         holder.elevationView.text = currentItem.elevation.toString()
         holder.itemView.setOnClickListener {
             Log.d("MyAdapter", "Clicked item: $currentItem")
+            sharedViewModel.saveRun(currentItem)
             navController.navigate(R.id.action_RunsListFragment_to_RunFragment)
         }
     }

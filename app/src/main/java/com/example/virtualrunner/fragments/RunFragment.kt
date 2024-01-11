@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.example.virtualrunner.R
 import com.example.virtualrunner.Run
 import com.example.virtualrunner.databinding.FragmentRunBinding
+import feri.pora.volunteerhub.SharedViewModel
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
@@ -17,6 +19,7 @@ import org.osmdroid.views.MapView
 class RunFragment : Fragment() {
     private var _binding: FragmentRunBinding? = null
     private val binding get() = _binding!!
+    private val sharedViewModel: SharedViewModel by activityViewModels()
 
     private lateinit var map: MapView
     private val run: Run = Run("name", "date", "time", 0.0f, 0)
@@ -38,11 +41,22 @@ class RunFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.nameView.text = run.name
-        binding.dateView.text = run.date
-        binding.timeView.text = run.time
-        binding.distanceView.text = run.distance.toString()
-        binding.elevationView.text = run.elevation.toString()
+        val run = sharedViewModel._selectedRun.value
+        if (run != null) {
+            binding.nameView.text = run.name
+        }
+        if (run != null) {
+            binding.dateView.text = run.date
+        }
+        if (run != null) {
+            binding.timeView.text = run.time
+        }
+        if (run != null) {
+            binding.distanceView.text = run.distance.toString()
+        }
+        if (run != null) {
+            binding.elevationView.text = run.elevation.toString()
+        }
 
         Configuration.getInstance().load(context, PreferenceManager.getDefaultSharedPreferences(context))
         map.setTileSource(TileSourceFactory.MAPNIK)
