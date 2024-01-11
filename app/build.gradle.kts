@@ -54,4 +54,5 @@ dependencies {
     implementation("com.google.code.gson:gson:2.9.0")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("org.osmdroid:osmdroid-android:6.1.17")
+    implementation("org.mongodb:mongodb-driver-kotlin-coroutine:4.11.0")
 }
