@@ -1,18 +1,20 @@
 package com.example.virtualrunner.fragments
 
+import android.R
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
-import com.example.virtualrunner.R
 import com.example.virtualrunner.Run
 import com.example.virtualrunner.databinding.FragmentRunBinding
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
+
 
 class RunFragment : Fragment() {
     private var _binding: FragmentRunBinding? = null
@@ -38,7 +40,7 @@ class RunFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.nameView.text = run.name
+        binding.nameView.text = requireArguments().getString("amount")
         binding.dateView.text = run.date
         binding.timeView.text = run.time
         binding.distanceView.text = run.distance.toString()
