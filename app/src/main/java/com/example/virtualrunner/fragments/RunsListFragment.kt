@@ -6,17 +6,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.virtualrunner.MyAdapter
 import com.example.virtualrunner.MyApplication
 import com.example.virtualrunner.R
 import com.example.virtualrunner.databinding.FragmentRunsListBinding
+import feri.pora.volunteerhub.SharedViewModel
 
 class RunsListFragment : Fragment() {
 
     private var _binding: FragmentRunsListBinding? = null
     private val binding get() = _binding!!
+    private val sharedViewModel: SharedViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +40,8 @@ class RunsListFragment : Fragment() {
 
         val recyclerView = binding.recyclerview
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.adapter = MyAdapter(requireContext(), items, findNavController())
+        recyclerView.adapter =
+            MyAdapter(requireContext(), sharedViewModel, items, findNavController())
 
         binding.fabAdd.setOnClickListener {
             findNavController().navigate(R.id.action_RunsListFragment_to_RecordFragment)
