@@ -8,6 +8,7 @@
     <fragment
         android:id="@+id/runsListFragment"
         android:name="com.example.virtualrunner.fragments.RunsListFragment"
+        android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_runs_list">
 
         <action
@@ -35,6 +36,10 @@
 
     </fragment>
     <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.virtualrunner.fragments.SettingsFragment"
+        android:label="SettingsFragment" />
+    <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.virtualrunner.fragments.ProfileFragment"
         />
@@ -61,5 +66,10 @@
         android:id="@+id/settingsFragment"
         android:name="com.example.virtualrunner.SettingsFragment"
         />
+        android:label="ProfileFragment" />
+    <fragment
+        android:id="@+id/forumFragment"
+        android:name="com.example.virtualrunner.fragments.ForumFragment"
+        android:label="ForumFragment" />
 
 </navigation>
