@@ -13,6 +13,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import io.realm.kotlin.mongodb.User
 import java.io.File
 import java.io.FileNotFoundException
 import java.util.UUID
@@ -26,6 +27,8 @@ class MyApplication : Application() {
     private val sharedPreferences: SharedPreferences by lazy {
         getSharedPreferences("MySettings", Context.MODE_PRIVATE)
     }
+
+    private var user: User? = null
 
     override fun onCreate() {
         super.onCreate()
@@ -55,13 +58,14 @@ class MyApplication : Application() {
             null
         }
 
-        val existingItems: MutableList<Run> = if (existingJson != null && existingJson.isNotEmpty()) {
-            val gson = Gson()
-            val type = object : TypeToken<List<Run>>() {}.type
-            gson.fromJson(existingJson, type)
-        } else {
-            mutableListOf()
-        }
+        val existingItems: MutableList<Run> =
+            if (existingJson != null && existingJson.isNotEmpty()) {
+                val gson = Gson()
+                val type = object : TypeToken<List<Run>>() {}.type
+                gson.fromJson(existingJson, type)
+            } else {
+                mutableListOf()
+            }
 
         existingItems.add(run)
 
@@ -81,5 +85,13 @@ class MyApplication : Application() {
         } else {
             emptyList()
         }
+    }
+
+    fun setUser(user1: User) {
+        user = user1
+    }
+
+    fun getUser(): User? {
+        return user
     }
 }

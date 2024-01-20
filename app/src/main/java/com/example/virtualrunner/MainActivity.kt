@@ -10,12 +10,17 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.example.virtualrunner.databinding.ActivityMainBinding
+import kotlinx.coroutines.runBlocking
+import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    lateinit var app: MyApplication
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,10 +47,27 @@ class MainActivity : AppCompatActivity() {
                 navController.navigate(R.id.settingsFragment)
                 true
             }
+
             R.id.action_profile -> {
                 navController.navigate(R.id.profileFragment)
                 true
             }
+
+            R.id.log_out -> {
+                app = application as MyApplication
+                runBlocking {
+                    try {
+                        app.getUser()?.logOut()
+                        navController.popBackStack(R.id.loginFragment, false)
+                        navController.navigate(R.id.loginFragment)
+
+                    } catch (e: Exception) {
+                        Toast.makeText(this@MainActivity, "error logging out :(", Toast.LENGTH_LONG).show()
+                    }
+                }
+                true
+            }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
