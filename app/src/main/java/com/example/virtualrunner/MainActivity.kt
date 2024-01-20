@@ -46,6 +46,10 @@ class MainActivity : AppCompatActivity() {
                 navController.navigate(R.id.profileFragment)
                 true
             }
+            R.id.action_forum -> {
+                navController.navigate(R.id.forumFragment)
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }

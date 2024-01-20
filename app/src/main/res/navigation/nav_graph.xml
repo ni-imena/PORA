@@ -43,5 +43,9 @@
         android:id="@+id/profileFragment"
         android:name="com.example.virtualrunner.fragments.ProfileFragment"
         android:label="ProfileFragment" />
+    <fragment
+        android:id="@+id/forumFragment"
+        android:name="com.example.virtualrunner.fragments.ForumFragment"
+        android:label="ForumFragment" />
 
 </navigation>

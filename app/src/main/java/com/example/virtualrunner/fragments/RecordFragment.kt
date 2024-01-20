@@ -16,11 +16,13 @@ import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.virtualrunner.AccelerometerData
+import com.example.virtualrunner.MongoDBConnection
 import com.example.virtualrunner.MyApplication
 import com.example.virtualrunner.R
 import com.example.virtualrunner.Run
 import com.example.virtualrunner.databinding.FragmentRecordBinding
 import com.google.gson.Gson
+import org.bson.Document
 import java.io.FileOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -31,6 +33,8 @@ import java.util.Random
 
 class RecordFragment : Fragment(), SensorEventListener {
 
+    private val connectionString = "mongodb+srv://admin:admin@ni-imena.sygmxf2.mongodb.net/?retryWrites=true&w=majority"
+    private val databaseName = "ni_imena"
     private var _binding: FragmentRecordBinding? = null
     private val binding get() = _binding!!
     private lateinit var sensorManager: SensorManager
@@ -92,7 +96,13 @@ class RecordFragment : Fragment(), SensorEventListener {
         val fileName = "accelerometer_data.json"
         val fileOutputStream: FileOutputStream
 
+        val mongoDBConnection = MongoDBConnection(connectionString, databaseName)
+
         try {
+            //Convert JSON to a Document (BSON)
+            val document = Document.parse(json)
+            mongoDBConnection.insertDocument("userRuns", document)
+
             fileOutputStream = requireActivity().openFileOutput(fileName, Context.MODE_PRIVATE)
             fileOutputStream.write(json.toByteArray())
             fileOutputStream.close()
@@ -130,7 +140,7 @@ class RecordFragment : Fragment(), SensorEventListener {
             val text = "X: $x\nY: $y\nZ: $z"
             accelerometerValues.text = text
 
-            val accelerometerData = AccelerometerData(timestamp, x, y, z)
+            val accelerometerData = AccelerometerData("Accelerometer", timestamp, x, y, z)
             accelerometerDataList.add(accelerometerData)
         }
     }
