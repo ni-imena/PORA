@@ -1,15 +1,25 @@
 package com.example.virtualrunner
 
+import com.mongodb.ConnectionString
+import com.mongodb.MongoClientSettings
 import com.mongodb.reactivestreams.client.FindPublisher
 import com.mongodb.reactivestreams.client.MongoClients
 import com.mongodb.reactivestreams.client.MongoCollection
 import com.mongodb.reactivestreams.client.MongoDatabase
 import org.bson.Document
-import org.reactivestreams.Publisher
 
 class MongoDBConnection (private val connectionString: String, private val databaseName: String) {
-    private val mongoClient = MongoClients.create(connectionString)
-    private val database: MongoDatabase = mongoClient.getDatabase(databaseName)
+    private var mongoClient = MongoClients.create(connectionString)
+    private var database: MongoDatabase = mongoClient.getDatabase(databaseName)
+
+//    private fun createMongoClient(connectionString: String): com.mongodb.client.MongoClient {
+//        val clientSettings = MongoClientSettings.builder()
+//            .applyConnectionString(ConnectionString(connectionString))
+//            .applyToDnsResolver { it.dnsResolver(com.mongodb.internal.dns.SystemPropertyDnsResolver()) }
+//            .build()
+//
+//        return MongoClients.create(clientSettings)
+//    }
 
     fun closeConnection() {
         mongoClient.close()
@@ -38,23 +48,23 @@ class MongoDBConnection (private val connectionString: String, private val datab
     // Add more query functions as needed (update, delete, etc.)
 }
 
-// FOR TESTING ONLY -------- USE THE CLASS WHERE NEEDED
-//fun main() {
-//    val connectionString = "mongodb+srv://admin:admin@ni-imena.sygmxf2.mongodb.net/?retryWrites=true&w=majority"
-//    val databaseName = "ni_imena"
-//
-//    // Create MongoDBConnection instance
-//    val mongoDBConnection = MongoDBConnection(connectionString, databaseName)
-//
-//    try {
-//        // Example usage
-//        val collectionName = "runs"
-//        //val document = Document("key", "value")
-//
-//        // Insert document
-//        //mongoDBConnection.insertDocument(collectionName, document)
-//
-//        // Find documents
+//FOR TESTING ONLY -------- USE THE CLASS WHERE NEEDED
+fun main() {
+    val connectionString = "mongodb+srv://admin:admin@ni-imena.sygmxf2.mongodb.net/?retryWrites=true&w=majority"
+    val databaseName = "ni_imena"
+
+    // Create MongoDBConnection instance
+    val mongoDBConnection = MongoDBConnection(connectionString, databaseName)
+
+    try {
+        // Example usage
+        val collectionName = "runs"
+        //val document = Document("key", "value")
+
+        // Insert document
+        //mongoDBConnection.insertDocument(collectionName, document)
+
+        // Find documents
 //        val filter = Document("key", "value")
 //        val firstDocument = mongoDBConnection.findFirstDocument(collectionName, filter)
 //
@@ -63,9 +73,15 @@ class MongoDBConnection (private val connectionString: String, private val datab
 //        } else {
 //            println("No matching documents found.")
 //        }
-//
-//    } finally {
-//        // Close the connection in a finally block to ensure it's closed even if an exception occurs
-//        mongoDBConnection.closeConnection()
-//    }
-//}
+
+        // Get the count of documents in the collection
+        val count = mongoDBConnection.getCollection(collectionName).countDocuments()
+
+        // Output the count
+        println("Number of documents in '$collectionName': $count")
+
+    } finally {
+        // Close the connection in a finally block to ensure it's closed even if an exception occurs
+        mongoDBConnection.closeConnection()
+    }
+}
