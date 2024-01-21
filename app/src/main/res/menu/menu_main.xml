@@ -17,4 +17,9 @@
         android:orderInCategory="100"
         android:title="@string/log_out"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_forum"
+        android:orderInCategory="100"
+        android:title="Forum"
+        app:showAsAction="never" />
 </menu>

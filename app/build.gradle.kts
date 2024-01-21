@@ -3,7 +3,6 @@ import com.android.build.api.dsl.Packaging
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("io.realm.kotlin")
 }
 
 android {
@@ -55,9 +54,6 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.6")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.6")
-    implementation("androidx.annotation:annotation:1.6.0")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -70,5 +66,13 @@ dependencies {
     implementation("io.realm.kotlin:library-base:1.11.0")
     implementation("io.realm.kotlin:library-sync:1.11.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0")
+
+    implementation ("org.mongodb:mongodb-driver-sync:4.4.0")
+    implementation ("org.mongodb:mongodb-driver-reactivestreams:4.11.0")
+    implementation ("org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5")
+    implementation ("org.eclipse.paho:org.eclipse.paho.android.service:1.1.1")
+
+
+    //implementation ("com.github.hannesa2:paho.mqtt.android:Tag")
 
 }

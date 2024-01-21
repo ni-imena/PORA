@@ -52,6 +52,10 @@ class MainActivity : AppCompatActivity() {
                 navController.navigate(R.id.profileFragment)
                 true
             }
+            R.id.action_forum -> {
+                navController.navigate(R.id.forumFragment)
+                true
+            }
 
             R.id.log_out -> {
                 app = application as MyApplication
