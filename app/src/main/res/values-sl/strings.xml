@@ -1,27 +1,30 @@
 <resources>
-    <string name="logo">Logo</string>
-    <string name="app_name">VolunteerHub</string>
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
-    <string name="add_event">Dodaj nov dogodek</string>
-    <string name="view_events">Oglej dogodkov</string>
-    <string name="settings">Nastavitve</string>
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
-
-    <!-- Messages Preferences -->
+    <string name="app_name">Virtualni tekač</string>
+    <string name="action_settings">Nastavitve</string>
+    <string name="action_profile">Profil</string>
+    <string name="log_out">Odjava</string>
+    <string name="first_fragment_label">Teka</string>
+    <string name="second_fragment_label">Zabeleži tek</string>
+    <string name="next">Naprej</string>
+    <string name="previous">Nazaj</string>
+    <string name="prompt_email">E-pošta</string>
+    <string name="prompt_password">Geslo</string>
+    <string name="action_log_in">Prijavi se</string>
+    <string name="action_register">Registriraj se</string>
+    <string name="welcome">"Dobrodošli!"</string>
+    <string name="welcome_login">"Dobrodošli! Začnimo :)"</string>
+    <string name="invalid_username">Neveljavno uporabniško ime</string>
+    <string name="invalid_password">Geslo mora biti >5 znakov</string>
+    <string name="login_failed">"Prijava ni uspela"</string>
+    <string name="messages_header">Sporočila</string>
+    <string name="sync_header">Sinhronizacija</string>
     <string name="signature_title">Vaš podpis</string>
-    <string name="reply_title">Default reply action</string>
-    <string name="event_title">Naslov dogodka</string>
-    <string name="event_description">Opis dogodka</string>
-    <string name="save">Shrani</string>
-    <string name="theme_switch">Spremeni na temno temo</string>
-    <string name="input">Vnos dogodka:</string>
-    <string name="input_date">Datum dogodka</string>
-    <string name="event_location">Lokacija dogodka</string>
-    <string name="view_map">Prikaz Mape</string>
-    <string name="language_preference_title">Nastavitev jezika</string>
-    <string name="language_default_value">English</string>
+    <string name="reply_title">Privzeto dejanje odgovora</string>
+    <string name="theme_switch">Preklopi v temni način</string>
+    <string name="language_preference_title">Jezikovna nastavitev</string>
+    <string name="language_default_value">Angleščina</string>
+    <string name="settings">Nastavitve</string>
+    <string name="no_acc">Novi v VR?</string>
+    <string name="logo">logo</string>
+    <string name="welcome_register">Let\'s get to know each other</string>
 </resources>
