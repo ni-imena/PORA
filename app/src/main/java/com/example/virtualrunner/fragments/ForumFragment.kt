@@ -15,10 +15,14 @@ import com.example.virtualrunner.databinding.FragmentForumBinding
 import org.eclipse.paho.android.service.MqttAndroidClient
 import org.eclipse.paho.client.mqttv3.IMqttActionListener
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken
+import org.eclipse.paho.client.mqttv3.MqttCallback
+import org.eclipse.paho.client.mqttv3.MqttClient
 import org.eclipse.paho.client.mqttv3.IMqttToken
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions
+import org.eclipse.paho.client.mqttv3.MqttException
 import org.eclipse.paho.client.mqttv3.MqttMessage
+import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence
 
 class ForumFragment : Fragment() {
 
@@ -26,9 +30,13 @@ class ForumFragment : Fragment() {
     private val binding get() = _binding!!
     val chatAdapter: ChatAdapter by lazy { createChatAdapter() }
 
-    private lateinit var mqttAndroidClient: MqttAndroidClient
-    private val serverUri = "mqtt://localhost:1883" // Replace with your MQTT broker details mqtt://localhost:1883
+    private val serverUri = "tcp://10.0.121.175:1883" // Replace with your MQTT broker details mqtt://localhost:1883
     private val clientId = "1"
+    private val topic = "testTopic"
+    private val mqttClient = MqttClient(serverUri, clientId, MemoryPersistence())
+    private val connOpts = MqttConnectOptions()
+    val chatMessages: MutableList<ChatMessage> = mutableListOf()
+    private lateinit var recyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +51,7 @@ class ForumFragment : Fragment() {
 
         val recyclerView: RecyclerView = rootView.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        chatAdapter = createChatAdapter()
         recyclerView.adapter = chatAdapter
 
         return rootView
@@ -51,27 +60,7 @@ class ForumFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        recyclerView.apply {
-//            layoutManager = LinearLayoutManager(requireContext())
-//            adapter = chatAdapter
-//        }
-
-        // Initialize MQTT client
-        mqttAndroidClient = MqttAndroidClient(requireContext(), serverUri, clientId)
-        val options = MqttConnectOptions()
-        options.isAutomaticReconnect = true
-
-        mqttAndroidClient.connect(options, null, object : IMqttActionListener {
-            override fun onSuccess(asyncActionToken: IMqttToken?) {
-                subscribeToTopic()
-                println("HEREEEEEEEEEEEEEE")
-            }
-
-            override fun onFailure(asyncActionToken: IMqttToken?, exception: Throwable?) {
-                // Handle connection failure
-                println("FAILED")
-            }
-        })
+        connectMQTT()
 
 //        if (mqttAndroidClient != null && mqttAndroidClient.isConnected) {
 //            //mqttAndroidClient.publish(topic, payload, qos, retained)
@@ -93,79 +82,68 @@ class ForumFragment : Fragment() {
 //            true
 //        }
 
-        binding.editText.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_SEND) {
-                val newMessage = binding.editText.text.toString()
-                if (newMessage.isNotBlank()) {
-                    val sentMessage = ChatMessage(newMessage, true)
-                    chatAdapter.submitList(chatAdapter.currentList + sentMessage)
-                    publishMessage(newMessage)
-                    binding.editText.text.clear()
-                }
-                true
-            } else {
-                false
-            }
-        }
-
-        binding.buttonSend.setOnClickListener{
-
-                val newMessage = binding.editText.text.toString()
-                if (newMessage.isNotBlank()) {
-                    val sentMessage = ChatMessage(newMessage, true)
-                    chatAdapter.submitList(chatAdapter.currentList + sentMessage)
-                    publishMessage(newMessage)
-                    binding.editText.text.clear()
-                }
-        }
-
-        // Set up MQTT message arrival listener
-        mqttAndroidClient.setCallback(object : MqttCallbackExtended {
-            override fun connectComplete(reconnect: Boolean, serverURI: String?) {
-                subscribeToTopic()
-            }
-
-            override fun connectionLost(cause: Throwable?) {
-                // Handle connection lost
-            }
-
             override fun messageArrived(topic: String?, message: MqttMessage?) {
+                println("Received message on topic '$topic': ${String(message?.payload ?: ByteArray(0))}")
+                val timestamp = System.currentTimeMillis()
                 message?.let {
-                    val receivedMessage = ChatMessage(it.toString(), false)
-                    chatAdapter.submitList(chatAdapter.currentList + receivedMessage)
+                    val receivedMessage = ChatMessage(it.toString(), false, timestamp)
+                    //chatAdapter.submitList(chatAdapter.currentList + receivedMessage)
+                    // Add the received message to your list
+                    chatMessages.add(receivedMessage)
+                    // Update the RecyclerView
+                    updateRecyclerView()
+
                 }
             }
 
             override fun deliveryComplete(token: IMqttDeliveryToken?) {
-                // Message delivery complete
+                // This method is called when a message is delivered to the server
             }
         })
 
-//        // Sample data
-//        val messages = listOf(
-//            ChatMessage("Hello!", true),
-//            ChatMessage("Hi there!", false),
-//            ChatMessage("How are you?", false),
-//            // Add more messages as needed
-//        )
-//
-//        chatAdapter.submitList(messages)
-//
-//        // Set up a listener for sending messages when the send button is pressed
-//        binding.editText.setOnEditorActionListener { _, _, _ ->
-//            val newMessage = binding.editText.text.toString()
-//            if (newMessage.isNotBlank()) {
-//                val sentMessage = ChatMessage(newMessage, true)
-//                chatAdapter.submitList(messages + sentMessage)
-//                // Send the message through MQTT here
-//                binding.editText.text.clear()
-//            }
-//            true
-//        }
     }
 
     private fun createChatAdapter(): ChatAdapter {
         return ChatAdapter()
+    }
+
+    // Function to update the RecyclerView
+    private fun updateRecyclerView() {
+        // Make sure to update the adapter on the main thread
+        activity?.runOnUiThread {
+            // Update the adapter's list with the latest chatMessages
+            chatAdapter.submitList(chatMessages.toList())
+            // Scroll to the bottom to show the latest message
+            recyclerView.scrollToPosition(chatAdapter.itemCount - 1)
+        }
+    }
+
+    private fun connectMQTT(){
+        try {
+            connOpts.isCleanSession = true
+
+            println("Connecting to broker: $serverUri")
+            mqttClient.connect(connOpts)
+            println("Connected")
+
+            // Subscribe to a topic
+            mqttClient.subscribe(topic)
+            println("Subscribed to topic: $topic")
+
+        } catch (e: MqttException) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun sendMessage(message: String){
+        mqttClient.publish(topic, message.toByteArray(), 0, false)
+        println("Published message: $message")
+    }
+
+    private fun disconnectMQTT(){
+        // Disconnect
+        mqttClient.disconnect()
+        println("Disconnected")
     }
 
     private fun subscribeToTopic() {
@@ -196,7 +174,7 @@ class ForumFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        mqttAndroidClient.disconnect()
+        disconnectMQTT()
         _binding = null
     }
 }

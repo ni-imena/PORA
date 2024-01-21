@@ -7,6 +7,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.virtualrunner.ChatMessage
 import com.example.virtualrunner.R
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class ChatAdapter : ListAdapter<ChatMessage, ChatAdapter.ChatViewHolder>(MessageDiffCallback()) {
 
@@ -19,6 +22,7 @@ class ChatAdapter : ListAdapter<ChatMessage, ChatAdapter.ChatViewHolder>(Message
     override fun onBindViewHolder(holder: ChatViewHolder, position: Int) {
         val message = getItem(position)
         holder.messageText.text = message.content
+        holder.timestampText.text = formatTimestamp(message.timestamp)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -27,6 +31,7 @@ class ChatAdapter : ListAdapter<ChatMessage, ChatAdapter.ChatViewHolder>(Message
 
     class ChatViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val messageText: TextView = itemView.findViewById(R.id.messageText)
+        val timestampText: TextView = itemView.findViewById(R.id.timestampText)
     }
 
     companion object {
@@ -42,5 +47,12 @@ class ChatAdapter : ListAdapter<ChatMessage, ChatAdapter.ChatViewHolder>(Message
         override fun areContentsTheSame(oldItem: ChatMessage, newItem: ChatMessage): Boolean {
             return oldItem.content == newItem.content
         }
+    }
+
+    // Add a helper function to format the timestamp
+    private fun formatTimestamp(timestamp: Long): String {
+        // Customize the formatting logic based on your requirements
+        val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        return sdf.format(Date(timestamp))
     }
 }
