@@ -26,5 +26,8 @@
     <string name="settings">Einstellungen</string>
     <string name="no_acc">Neu bei VR?</string>
     <string name="logo">logo</string>
+    <string name="forum">Forum</string>
+    <string name="typeMessage">Eine Nachricht eingeben</string>
+    <string name="send">Senden</string>
     <string name="welcome_register">Lass uns einander kennenlernen :)</string>
 </resources>
