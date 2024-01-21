@@ -11,6 +11,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.fragment.findNavController
 import com.example.virtualrunner.databinding.ActivityMainBinding
 import kotlinx.coroutines.runBlocking
@@ -29,6 +30,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
+        app = application as MyApplication
+        val theme =getThemeFromPref()
+        if(theme == "LIGHT")
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        else
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
 
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(navController.graph)
@@ -62,7 +69,8 @@ class MainActivity : AppCompatActivity() {
                         navController.navigate(R.id.loginFragment)
 
                     } catch (e: Exception) {
-                        Toast.makeText(this@MainActivity, "error logging out :(", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@MainActivity, "error logging out :(", Toast.LENGTH_LONG)
+                            .show()
                     }
                 }
                 true
@@ -77,4 +85,21 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
     }
+
+    fun setTheme(theme: String) {
+        app = application as MyApplication
+        app.setTheme(theme)
+    }
+
+    fun getThemeFromPref(): String? {
+        app = application as MyApplication
+        return app.getThemeFromPref()
+    }
+
+    fun setLocale(language: String) {
+        app.setLocale(language)
+        recreate()
+    }
+
+
 }

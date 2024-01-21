@@ -36,10 +36,6 @@
 
     </fragment>
     <fragment
-        android:id="@+id/settingsFragment"
-        android:name="com.example.virtualrunner.fragments.SettingsFragment"
-        android:label="SettingsFragment" />
-    <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.virtualrunner.fragments.ProfileFragment"
         android:label="ProfileFragment" />
@@ -64,5 +60,9 @@
             android:id="@+id/action_registerFragment_to_runsListFragment"
             app:destination="@id/runsListFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.virtualrunner.SettingsFragment"
+        android:label="SettingsFragment" />
 
 </navigation>

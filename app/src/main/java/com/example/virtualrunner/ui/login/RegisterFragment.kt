@@ -59,7 +59,7 @@ class RegisterFragment : Fragment() {
                     app.emailPasswordAuth.registerUser(email, password)
                     val appContext = context?.applicationContext ?: return@runBlocking
                     Toast.makeText(appContext, R.string.welcome, Toast.LENGTH_LONG).show()
-                    findNavController().navigate(R.id.action_loginFragment_to_runsListFragment)
+                    findNavController().navigate(R.id.action_registerFragment_to_runsListFragment)
                 } catch (e: Exception) {
                     showLoginFailed("invalid credentials")
                 }

@@ -47,6 +47,9 @@ class RunsListFragment : Fragment() {
             findNavController().navigate(R.id.action_RunsListFragment_to_RecordFragment)
         }
     }
+    fun onBackPressed(){
+        findNavController().popBackStack(R.id.loginFragment, false)
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

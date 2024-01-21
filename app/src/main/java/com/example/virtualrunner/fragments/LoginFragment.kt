@@ -1,16 +1,19 @@
 package com.example.virtualrunner.fragments
+
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.virtualrunner.R
 import com.example.virtualrunner.databinding.FragmentLoginBinding
 import io.realm.kotlin.mongodb.App
-import io.realm.kotlin.mongodb.AppConfiguration
 import io.realm.kotlin.mongodb.Credentials
 import kotlinx.coroutines.runBlocking
+
 
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
@@ -22,6 +25,7 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        val navController = findNavController()
         return binding.root
     }
 
@@ -36,12 +40,12 @@ class LoginFragment : Fragment() {
             val credentials = Credentials.emailPassword(email, password)
             runBlocking {
                 val user = app.login(credentials)
-                findNavController().navigate(R.id.action_loginFragment_to_runsListFragment)
+                findNavController().navigate(com.example.virtualrunner.R.id.action_loginFragment_to_runsListFragment)
             }
         }
 
         binding.register.setOnClickListener {
-            findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
+            findNavController().navigate(com.example.virtualrunner.R.id.action_loginFragment_to_registerFragment)
         }
 
     }
@@ -50,4 +54,5 @@ class LoginFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
 }

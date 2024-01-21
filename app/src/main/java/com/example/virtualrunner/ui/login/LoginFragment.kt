@@ -57,7 +57,6 @@ class LoginFragment : Fragment() {
         val usernameEditText = binding.email
         val passwordEditText = binding.password
         val loginButton = binding.login
-        val registerButton = binding.register
 
         loginButton.setOnClickListener {
             val email = usernameEditText.text.toString()
@@ -67,13 +66,13 @@ class LoginFragment : Fragment() {
                 try {
                     val user = app.login(credentials)
                     findNavController().navigate(R.id.action_loginFragment_to_runsListFragment)
-                } catch (e: Exception) {
+                } catch (e:Exception) {
                     showLoginFailed("invalid credentials")
                 }
             }
         }
 
-        registerButton.setOnClickListener {
+        binding.register.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
     }

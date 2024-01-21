@@ -1,0 +1,25 @@
+<resources>
+    <string name="logo">Logo</string>
+    <string name="app_name">VolunteerHub</string>
+    <string name="next">Nächste</string>
+    <string name="previous">Vorherige</string>
+    <string name="add_event">Neue Veranstaltung hinzufügen</string>
+    <string name="view_events">Veranstaltungen anzeigen</string>
+    <string name="settings">Einstellungen</string>
+    <string name="messages_header">Nachrichten</string>
+    <string name="sync_header">Synchronisieren</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Ihre Unterschrift</string>
+    <string name="reply_title">Standard-Antwortaktion</string>
+    <string name="event_title">Veranstaltungstitel</string>
+    <string name="event_description">Beschreibung der Veranstaltung</string>
+    <string name="save">Speichern</string>
+    <string name="theme_switch">Wechseln zum dunklen Modus</string>
+    <string name="input">Eingabe für die Veranstaltung:</string>
+    <string name="input_date">Veranstaltungsdatum</string>
+    <string name="event_location">Veranstaltungsort</string>
+    <string name="view_map">Karte anzeigen</string>
+    <string name="language_preference_title">Spracheinstellung</string>
+    <string name="language_default_value">Englisch</string>
+</resources>
