@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <!-- item_received_message.xml -->
+<LinearLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:gravity="start"
+android:orientation="vertical">
 
     <TextView
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -13,5 +14,13 @@
         android:background="@drawable/bg_received_message"
         android:padding="8dp"/>
 
+    <!-- TextView for timestamp -->
+    <TextView
+        android:id="@+id/timestampText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/darker_gray"
+        android:paddingTop="4dp"
+        android:paddingRight="8dp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

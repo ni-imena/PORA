@@ -18,7 +18,7 @@
         android:layout_width="288dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:hint="Type a message"
+        android:hint="@string/typeMessage"
         android:imeOptions="actionSend"
         android:inputType="textMultiLine|textCapSentences" />
 
@@ -27,6 +27,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:text="Button" />
+        android:layout_alignParentEnd="true"
+        android:text="@string/send" />
 </RelativeLayout>
