@@ -96,12 +96,12 @@ class RecordFragment : Fragment(), SensorEventListener {
         val fileName = "accelerometer_data.json"
         val fileOutputStream: FileOutputStream
 
-        val mongoDBConnection = MongoDBConnection(connectionString, databaseName)
+        //val mongoDBConnection = MongoDBConnection(connectionString, databaseName)
 
         try {
             //Convert JSON to a Document (BSON)
-            val document = Document.parse(json)
-            mongoDBConnection.insertDocument("userRuns", document)
+            //val document = Document.parse(json)
+            //mongoDBConnection.insertDocument("userRuns", document)
 
             fileOutputStream = requireActivity().openFileOutput(fileName, Context.MODE_PRIVATE)
             fileOutputStream.write(json.toByteArray())

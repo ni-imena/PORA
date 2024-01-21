@@ -1,4 +1,4 @@
-package com.example.virtualrunner
+package com.example.virtualrunner.fragments
 
 import android.os.Bundle
 import android.view.View
