@@ -116,23 +116,21 @@ class MyApplication : Application() {
     @SuppressWarnings("deprecation")
     fun setLocale(languageCode: String) {
         val locale = Locale(languageCode)
-        val config = resources.configuration
-        config.setLocale(locale)
 
         with(sharedPreferences.edit()) {
             putString("LOCALE", locale.toString())
             apply()
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            createConfigurationContext(config)
-        }
-
-        resources.updateConfiguration(config, resources.displayMetrics)
     }
 
     fun getThemeFromPref(): String? {
         val theme: String? = sharedPreferences.getString("THEME", "LIGHT")
 
         return theme;
+    }
+
+    fun getLocaleFromPref(): String? {
+        val loc: String? = sharedPreferences.getString("LOCALE", "en")
+        return loc
     }
 }

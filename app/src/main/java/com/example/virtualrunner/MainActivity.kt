@@ -1,5 +1,6 @@
 package com.example.virtualrunner
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import com.google.android.material.snackbar.Snackbar
@@ -12,9 +13,11 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.app.ActivityCompat
 import com.example.virtualrunner.databinding.ActivityMainBinding
 import kotlinx.coroutines.runBlocking
 import java.lang.Exception
+import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
 
@@ -35,6 +38,9 @@ class MainActivity : AppCompatActivity() {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         else
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        app = application as MyApplication
+        if(Locale(app.getLocaleFromPref())!=resources.configuration.locales.get(0))
+            app.getLocaleFromPref()?.let { setLocale(it) }
 
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(navController.graph)
@@ -99,8 +105,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun setLocale(language: String) {
+        val locale = Locale(language)
+        val config = resources.configuration
+        config.setLocale(locale)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            createConfigurationContext(config)
+        }
+
+        resources.updateConfiguration(config, resources.displayMetrics)
+        app = application as MyApplication
         app.setLocale(language)
         recreate()
+    }
+    fun getLocale(): String? {
+        app = application as MyApplication
+        return app.getLocaleFromPref()
     }
 
 

@@ -13,7 +13,6 @@ import com.example.virtualrunner.R
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
-
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
         val themeSwitch: SwitchPreferenceCompat? = findPreference("theme_switch")
@@ -34,6 +33,14 @@ class SettingsFragment : PreferenceFragmentCompat() {
             true
         }
         val languagePreference: ListPreference? = findPreference("language_preference")
+        val lang: String? = (activity as MainActivity).getLocale()
+        if (lang == "en") {
+            languagePreference?.setValueIndex(0)
+        } else if (lang == "sl") {
+            languagePreference?.setValueIndex(1)
+        } else
+            languagePreference?.setValueIndex(2)
+
         languagePreference?.setOnPreferenceChangeListener { preference, newValue ->
             val language = newValue as String
             (activity as MainActivity).setLocale(language);
