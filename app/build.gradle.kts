@@ -71,4 +71,13 @@ dependencies {
     implementation("io.realm.kotlin:library-base:1.11.0")
     implementation("io.realm.kotlin:library-sync:1.11.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0")
+
+    implementation ("org.mongodb:mongodb-driver-sync:4.4.0")
+    implementation ("org.mongodb:mongodb-driver-reactivestreams:4.11.0")
+    implementation ("org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5")
+    implementation ("org.eclipse.paho:org.eclipse.paho.android.service:1.1.1")
+
+
+    //implementation ("com.github.hannesa2:paho.mqtt.android:Tag")
+
 }

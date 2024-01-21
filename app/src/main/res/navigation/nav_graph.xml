@@ -42,10 +42,11 @@
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.virtualrunner.fragments.ProfileFragment"
-        />
+        android:label="ProfileFragment" />
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.virtualrunner.ui.login.LoginFragment"
+        android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
@@ -57,16 +58,12 @@
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.example.virtualrunner.ui.login.RegisterFragment"
+        android:label="fragment_register"
         tools:layout="@layout/fragment_register" >
         <action
             android:id="@+id/action_registerFragment_to_runsListFragment"
             app:destination="@id/runsListFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/settingsFragment"
-        android:name="com.example.virtualrunner.SettingsFragment"
-        />
-        android:label="ProfileFragment" />
     <fragment
         android:id="@+id/forumFragment"
         android:name="com.example.virtualrunner.fragments.ForumFragment"
