@@ -12,7 +12,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.navigation.fragment.findNavController
 import com.example.virtualrunner.databinding.ActivityMainBinding
 import kotlinx.coroutines.runBlocking
 import java.lang.Exception
@@ -41,12 +40,14 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
         getSupportActionBar()?.setDisplayShowTitleEnabled(false);
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)

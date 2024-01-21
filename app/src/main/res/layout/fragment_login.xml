@@ -76,7 +76,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:textColor="@color/prompt" />
+            android:textColor="@color/prompt"
+            android:textSize="17sp"/>
 
         <EditText
             android:id="@+id/password"
@@ -92,6 +93,7 @@
             android:inputType="textPassword"
             android:selectAllOnFocus="true"
             android:textColor="@color/prompt"
+            android:textSize="17sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/email" />
