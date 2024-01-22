@@ -9,7 +9,13 @@ import com.mongodb.kotlin.client.coroutine.MongoDatabase
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import org.bson.Document
+import org.bson.types.ObjectId
 import java.util.concurrent.TimeUnit
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import java.io.File
+import java.io.FileReader
+import java.io.FileWriter
 
 class MongoDBConnection () {
 
@@ -89,7 +95,26 @@ class MongoDBConnection () {
 //    }
 }
 
-// TESTING ONLY
+fun saveItemToFile(run: Run, filename: String) {
+    val gson = Gson()
+    val file = File(filename)
+
+    // Load existing runs
+    val runs: MutableList<Run> = if (file.exists()) {
+        val type = object : TypeToken<List<Run>>() {}.type
+        gson.fromJson(FileReader(file), type)
+    } else {
+        mutableListOf()
+    }
+
+    // Add new run
+    runs.add(run)
+
+    // Save all runs
+    FileWriter(file).use { it.write(gson.toJson(runs)) }
+}
+
+
 fun main() {
     // Replace the placeholders with your credentials and hostname
     // Create an instance of MongoDBConnection
@@ -101,11 +126,46 @@ fun main() {
 
         // Perform your MongoDB operations here
         runBlocking {
-            // Example: Get all items from a collection named "yourCollection"
             val collectionName = "runs"
+
+            // Get all items from the collection
             val allItems = mongoDBConnection.getAllItems(collectionName)
 
-            println("All items in $collectionName: $allItems")
+            // Iterate over each item (run)
+            for (item in allItems) {
+                // Get the activity object
+                val activity = item["activity"] as? Map<*, *>
+
+                // Get the name from the activity object
+                val id = item["_id"] as? ObjectId
+                val user = item["userId"] as? ObjectId
+                val name = activity?.get("name") as? String
+                val date = activity?.get("start_date") as? String
+                val time = activity?.get("moving_time") as? Int
+                var distance = activity?.get("distance") as? Double
+                var elevation = activity?.get("total_elevation_gain") as? Double
+
+                val stream = item["stream"] as? Map<*, *>
+
+                val latlng = stream?.get("latlng") as LatLng
+
+
+                println("$id $user $name $date $time $distance $elevation")
+                println("$latlng")
+
+                if (distance == null) {
+                    distance = 0.0;
+                }
+
+                if (elevation == null) {
+                    elevation = 0.0;
+                }
+
+                val filename = "savedRuns.json"
+                val run = Run(name.toString(), date.toString(), time.toString(), distance.toFloat(), elevation.toInt(), latlng)
+                saveItemToFile(run, filename)
+
+            }
         }
     } catch (e: Exception) {
         e.printStackTrace()

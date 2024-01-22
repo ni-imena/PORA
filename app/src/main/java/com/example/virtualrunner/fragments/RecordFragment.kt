@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.virtualrunner.AccelerometerData
+import com.example.virtualrunner.LatLng
 import com.example.virtualrunner.MongoDBConnection
 import com.example.virtualrunner.MyApplication
 import com.example.virtualrunner.Run
@@ -117,21 +118,6 @@ class RecordFragment : Fragment(), SensorEventListener {
         } catch (e: IOException) {
             e.printStackTrace()
         }
-    }
-
-    private fun saveItemToJson() {
-        val random = Random()
-        val name = "Run ${random.nextInt(100)}"
-        val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date()).toString()
-        val time = SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(Date()).toString()
-        val distance = random.nextFloat() * 10
-        val elevation = random.nextInt(50)
-        val run = Run(name, date, time, distance, elevation)
-
-        val myApplication = requireActivity().application as MyApplication
-        Log.d("Run", run.toString())
-
-        myApplication.saveItemToFile(run, "runs.json")
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {

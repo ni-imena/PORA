@@ -45,8 +45,8 @@ android {
     }
 }
 
-dependencies {
 
+dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
@@ -70,7 +70,6 @@ dependencies {
     implementation("io.realm.kotlin:library-sync:1.11.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.7.1") // Use the latest version available
-
 
     implementation ("org.mongodb:mongodb-driver-sync:4.11.1")
     implementation ("org.mongodb:mongodb-driver-reactivestreams:4.11.0")

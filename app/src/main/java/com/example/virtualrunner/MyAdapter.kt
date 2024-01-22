@@ -1,6 +1,7 @@
 package com.example.virtualrunner
 
 import android.content.Context
+import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.text.Layout.Directions
 import android.util.Log
@@ -10,6 +11,7 @@ import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.virtualrunner.databinding.RunCardBinding
 import feri.pora.volunteerhub.SharedViewModel
+import java.util.Locale
 
 class RunViewHolder(val binding: RunCardBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -25,7 +27,10 @@ class MyAdapter(private val context: Context, private val sharedViewModel: Share
     override fun onBindViewHolder(holder: RunViewHolder, position: Int) {
         val currentItem = items[position]
         holder.binding.runName.text = currentItem.name
-        holder.binding.date.text = currentItem.date
+        val originalFormat = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+        val targetFormat = SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH)
+        val date = originalFormat.parse(currentItem.date)
+        holder.binding.date.text = targetFormat.format(date)
         holder.binding.time.text = currentItem.time
         holder.itemView.setOnClickListener {
             Log.d("MyAdapter", "Clicked item: $currentItem")

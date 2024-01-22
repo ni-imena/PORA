@@ -1,7 +1,10 @@
 package com.example.virtualrunner.fragments
 
+import android.graphics.Color
+import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +18,8 @@ import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.Polyline
+import java.util.Locale
 
 class RunFragment : Fragment() {
     private var _binding: FragmentRunBinding? = null
@@ -44,32 +49,49 @@ class RunFragment : Fragment() {
             binding.nameView.text = run.name
         }
         if (run != null) {
-            binding.dateView.text = run.date
+            val originalFormat = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+            val targetFormat = SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH)
+            val date = originalFormat.parse(run.date)
+            binding.dateView.text = targetFormat.format(date)
         }
         if (run != null) {
             binding.timeView.text = run.time
         }
         if (run != null) {
-            binding.distanceView.text = run.distance.toString()
+            binding.distanceView.text = run.distance.toString() + " m"
         }
         if (run != null) {
-            binding.elevationView.text = run.elevation.toString()
+            binding.elevationView.text = run.elevation.toString() + " m"
         }
 
         Configuration.getInstance().load(context, PreferenceManager.getDefaultSharedPreferences(context))
         map.setTileSource(TileSourceFactory.MAPNIK)
         map.setMultiTouchControls(true)
         val mapController = map.controller
-        mapController.setCenter(GeoPoint(46.5547, 15.6459))
         mapController.setZoom(15)
 
-//        val marker = Marker(map)
-//        marker.position = GeoPoint(args.argLat.toDouble(), args.argLng.toDouble())
-//        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-//        val drawable: Drawable = ContextCompat.getDrawable(requireContext(), R.drawable.location)!!
-//        marker.icon = drawable
-//        map.overlays.add(marker)
-//        map.invalidate()
+        val points = run?.latlng?.data?.map { GeoPoint(it[0], it[1]) }
+
+        if (points != null) {
+            val latitudes = points.map { it.latitude }
+            val longitudes = points.map { it.longitude }
+
+            val minLat = latitudes.minOrNull() ?: 0.0
+            val maxLat = latitudes.maxOrNull() ?: 0.0
+            val minLon = longitudes.minOrNull() ?: 0.0
+            val maxLon = longitudes.maxOrNull() ?: 0.0
+
+            val midLat = (minLat + maxLat) / 2
+            val midLon = (minLon + maxLon) / 2
+
+            mapController.setCenter(GeoPoint(midLat, midLon))
+        }
+
+        val line = Polyline()
+        line.setPoints(points)
+        line.color = Color.BLACK
+        map.overlays.add(line)
+        map.invalidate()
 
     }
 
