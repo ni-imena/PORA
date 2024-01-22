@@ -5,20 +5,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.virtualrunner.ChatMessage
 import com.example.virtualrunner.R
 import com.example.virtualrunner.databinding.FragmentForumBinding
-import org.eclipse.paho.android.service.MqttAndroidClient
-import org.eclipse.paho.client.mqttv3.IMqttActionListener
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken
 import org.eclipse.paho.client.mqttv3.MqttCallback
 import org.eclipse.paho.client.mqttv3.MqttClient
-import org.eclipse.paho.client.mqttv3.IMqttToken
-import org.eclipse.paho.client.mqttv3.MqttCallbackExtended
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions
 import org.eclipse.paho.client.mqttv3.MqttException
 import org.eclipse.paho.client.mqttv3.MqttMessage
@@ -33,7 +29,7 @@ class ForumFragment : Fragment() {
     private val serverUri = "tcp://10.0.121.175:1883" // Replace with your MQTT broker details mqtt://localhost:1883
     private val clientId = "1"
     private val topic = "testTopic"
-    private val mqttClient = MqttClient(serverUri, clientId, MemoryPersistence())
+    private lateinit var mqttClient: MqttClient
     private val connOpts = MqttConnectOptions()
     val chatMessages: MutableList<ChatMessage> = mutableListOf()
     private lateinit var recyclerView: RecyclerView
@@ -60,41 +56,51 @@ class ForumFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        connectMQTT()
+        try {
+            mqttClient = MqttClient(serverUri, clientId, MemoryPersistence())
+            connectMQTT()
 
-        binding.buttonSend.setOnClickListener{
-            val newMessage = binding.editText.text.toString()
-            val timestamp = System.currentTimeMillis()
-            val sentMessage = ChatMessage(newMessage, true, timestamp)
-            sendMessage(newMessage)
-            chatMessages.add(sentMessage)
-            binding.editText.text.clear()
-        }
-
-        mqttClient.setCallback(object : MqttCallback {
-            override fun connectionLost(cause: Throwable?) {
-                println("Connection lost: $cause")
-            }
-
-            override fun messageArrived(topic: String?, message: MqttMessage?) {
-                println("Received message on topic '$topic': ${String(message?.payload ?: ByteArray(0))}")
+            binding.buttonSend.setOnClickListener{
+                val newMessage = binding.editText.text.toString()
                 val timestamp = System.currentTimeMillis()
-                message?.let {
-                    val receivedMessage = ChatMessage(it.toString(), false, timestamp)
-                    //chatAdapter.submitList(chatAdapter.currentList + receivedMessage)
-                    // Add the received message to your list
-                    chatMessages.add(receivedMessage)
-                    // Update the RecyclerView
-                    updateRecyclerView()
+                val sentMessage = ChatMessage(newMessage, true, timestamp)
+                sendMessage(newMessage)
+                chatMessages.add(sentMessage)
+                binding.editText.text.clear()
+            }
 
+            mqttClient.setCallback(object : MqttCallback {
+                override fun connectionLost(cause: Throwable?) {
+                    println("Connection lost: $cause")
                 }
-            }
 
-            override fun deliveryComplete(token: IMqttDeliveryToken?) {
-                // This method is called when a message is delivered to the server
-            }
-        })
+                override fun messageArrived(topic: String?, message: MqttMessage?) {
+                    println("Received message on topic '$topic': ${String(message?.payload ?: ByteArray(0))}")
+                    val timestamp = System.currentTimeMillis()
+                    message?.let {
+                        val receivedMessage = ChatMessage(it.toString(), false, timestamp)
+                        //chatAdapter.submitList(chatAdapter.currentList + receivedMessage)
+                        // Add the received message to your list
+                        chatMessages.add(receivedMessage)
+                        // Update the RecyclerView
+                        updateRecyclerView()
 
+                    }
+                }
+
+                override fun deliveryComplete(token: IMqttDeliveryToken?) {
+                    // This method is called when a message is delivered to the server
+                }
+            })
+        }
+        catch (e: Exception){
+            e.printStackTrace()
+            Toast.makeText(requireContext(), "MQTT not running", Toast.LENGTH_SHORT).show()
+
+            // Disable the "Send" button and EditText
+            binding.buttonSend.isEnabled = false
+            binding.editText.isEnabled = false
+        }
     }
 
     private fun createChatAdapter(): ChatAdapter {
@@ -126,6 +132,9 @@ class ForumFragment : Fragment() {
 
         } catch (e: MqttException) {
             e.printStackTrace()
+            // Disable the "Send" button and EditText
+            binding.buttonSend.isEnabled = false
+            binding.editText.isEnabled = false
         }
     }
 

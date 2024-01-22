@@ -1,13 +1,11 @@
 package com.example.virtualrunner.fragments
 
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
 import com.example.virtualrunner.MainActivity
-import com.example.virtualrunner.MyApplication
 import com.example.virtualrunner.R
 
 

@@ -2,21 +2,17 @@ package com.example.virtualrunner
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import com.google.android.material.snackbar.Snackbar
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import android.view.Menu
-import android.view.MenuItem
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.app.ActivityCompat
 import com.example.virtualrunner.databinding.ActivityMainBinding
 import kotlinx.coroutines.runBlocking
-import java.lang.Exception
 import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
