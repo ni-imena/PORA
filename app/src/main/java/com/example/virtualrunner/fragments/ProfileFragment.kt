@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.Button
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.virtualrunner.MyApplication
 import com.example.virtualrunner.R
 import com.example.virtualrunner.databinding.FragmentProfileBinding
@@ -15,7 +17,8 @@ class ProfileFragment : Fragment() {
     private val binding get() = _binding!!
     lateinit var app: MyApplication
 
-    private lateinit var textWelcomeToProfile: TextView
+    private lateinit var yourImageView: ImageView
+    private lateinit var buttonRun: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,9 +39,21 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        textWelcomeToProfile = binding.textView
+        yourImageView = binding.imageView2
+        //buttonRun = binding.buttonRun
 
-        val welcomeMessage = getString(R.string.welcomeToProfile) + app.getUser().toString()
-        textWelcomeToProfile.text = welcomeMessage
+        yourImageView.setOnClickListener{
+            findNavController().navigate(R.id.action_profileFragment_to_runsListFragment)
+        }
+
+//        buttonRun.setOnClickListener{
+//            findNavController().navigate(R.id.action_profileFragment_to_runsListFragment)
+//        }
+
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

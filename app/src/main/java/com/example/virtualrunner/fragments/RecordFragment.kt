@@ -13,10 +13,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.virtualrunner.AccelerometerData
+import com.example.virtualrunner.MongoDBConnection
 import com.example.virtualrunner.MyApplication
 import com.example.virtualrunner.Run
 import com.example.virtualrunner.databinding.FragmentRecordBinding
 import com.google.gson.Gson
+import kotlinx.coroutines.runBlocking
+import org.bson.Document
 import java.io.FileOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -82,6 +85,23 @@ class RecordFragment : Fragment(), SensorEventListener {
         // Unregister the sensor listener when recording stops
         sensorManager.unregisterListener(this)
         saveAccelerometerDataToFile()
+        runBlocking{
+            //saveToDatabase()
+        }
+    }
+
+    private suspend fun saveToDatabase() {
+        val gson = Gson()
+        val json = gson.toJson(accelerometerDataList)
+        val mongoDBConnection = MongoDBConnection()
+
+        try {
+            //Convert JSON to a Document (BSON)
+            val document = Document.parse(json)
+            mongoDBConnection.insertDocument("userRuns", document)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
     }
 
     private fun saveAccelerometerDataToFile() {
@@ -90,13 +110,7 @@ class RecordFragment : Fragment(), SensorEventListener {
         val fileName = "accelerometer_data.json"
         val fileOutputStream: FileOutputStream
 
-        //val mongoDBConnection = MongoDBConnection(connectionString, databaseName)
-
         try {
-            //Convert JSON to a Document (BSON)
-            //val document = Document.parse(json)
-            //mongoDBConnection.insertDocument("userRuns", document)
-
             fileOutputStream = requireActivity().openFileOutput(fileName, Context.MODE_PRIVATE)
             fileOutputStream.write(json.toByteArray())
             fileOutputStream.close()

@@ -30,5 +30,6 @@
     <string name="typeMessage">Eine Nachricht eingeben</string>
     <string name="send">Senden</string>
     <string name="welcome_register">Lass uns einander kennenlernen :)</string>
-    <string name="welcomeToProfile">"Willkommen in Ihrem Profil "</string>
+    <string name="welcomeToProfile">Willkommen in Ihrem Profil!</string>
+    <string name="run">Run</string>
 </resources>

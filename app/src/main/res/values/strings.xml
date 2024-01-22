@@ -74,5 +74,6 @@
     <string name="welcome_register">Let\'s get to know each other</string>
     <string name="typeMessage">Type a message</string>
     <string name="send">Send</string>
-    <string name="welcomeToProfile">Welcome to your profile</string>
+    <string name="welcomeToProfile">Welcome to your profile!</string>
+    <string name="run">Run</string>
 </resources>

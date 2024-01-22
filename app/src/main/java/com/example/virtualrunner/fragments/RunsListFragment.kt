@@ -2,10 +2,10 @@ package com.example.virtualrunner.fragments
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -46,6 +46,27 @@ class RunsListFragment : Fragment() {
         binding.fabAdd.setOnClickListener {
             findNavController().navigate(R.id.action_RunsListFragment_to_RecordFragment)
         }
+
+
+        // GET ALL RUNS
+//        val mongoDBConnection = MongoDBConnection()
+//
+//        try {
+//            // Connect to MongoDB
+//            mongoDBConnection.connect()
+//
+//            // Perform your MongoDB operations here
+//            runBlocking {
+//                // Example: Get all items from a collection named "yourCollection"
+//                val collectionName = "runs"
+//                val allItems = mongoDBConnection.getAllItems(collectionName)
+//
+//                // print them
+//                println("All items in $collectionName: $allItems")
+//            }
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
     }
     fun onBackPressed(){
         findNavController().popBackStack(R.id.loginFragment, false)
