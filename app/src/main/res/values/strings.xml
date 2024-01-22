@@ -76,4 +76,5 @@
     <string name="send">Send</string>
     <string name="welcomeToProfile">Welcome to your profile!</string>
     <string name="run">Run</string>
+    <string name="my_runs">My runs</string>
 </resources>
