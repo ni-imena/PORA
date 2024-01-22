@@ -56,50 +56,58 @@ class ForumFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        try {
-            mqttClient = MqttClient(serverUri, clientId, MemoryPersistence())
-            connectMQTT()
+        binding.buttonSend.isEnabled = false
+        binding.editText.isEnabled = false
 
-            binding.buttonSend.setOnClickListener{
-                val newMessage = binding.editText.text.toString()
-                val timestamp = System.currentTimeMillis()
-                val sentMessage = ChatMessage(newMessage, true, timestamp)
-                sendMessage(newMessage)
-                chatMessages.add(sentMessage)
-                binding.editText.text.clear()
-            }
+        binding.buttonConnect.setOnClickListener {
+            try {
+                mqttClient = MqttClient(serverUri, clientId, MemoryPersistence())
+                connectMQTT()
 
-            mqttClient.setCallback(object : MqttCallback {
-                override fun connectionLost(cause: Throwable?) {
-                    println("Connection lost: $cause")
-                }
+                binding.buttonSend.isEnabled = true
+                binding.editText.isEnabled = true
 
-                override fun messageArrived(topic: String?, message: MqttMessage?) {
-                    println("Received message on topic '$topic': ${String(message?.payload ?: ByteArray(0))}")
+                binding.buttonSend.setOnClickListener{
+                    val newMessage = binding.editText.text.toString()
                     val timestamp = System.currentTimeMillis()
-                    message?.let {
-                        val receivedMessage = ChatMessage(it.toString(), false, timestamp)
-                        //chatAdapter.submitList(chatAdapter.currentList + receivedMessage)
-                        // Add the received message to your list
-                        chatMessages.add(receivedMessage)
-                        // Update the RecyclerView
-                        updateRecyclerView()
+                    val sentMessage = ChatMessage(newMessage, true, timestamp)
+                    sendMessage(newMessage)
+                    chatMessages.add(sentMessage)
+                    binding.editText.text.clear()
+                }
 
+                mqttClient.setCallback(object : MqttCallback {
+                    override fun connectionLost(cause: Throwable?) {
+                        println("Connection lost: $cause")
                     }
-                }
 
-                override fun deliveryComplete(token: IMqttDeliveryToken?) {
-                    // This method is called when a message is delivered to the server
-                }
-            })
-        }
-        catch (e: Exception){
-            e.printStackTrace()
-            Toast.makeText(requireContext(), "MQTT not running", Toast.LENGTH_SHORT).show()
+                    override fun messageArrived(topic: String?, message: MqttMessage?) {
+                        println("Received message on topic '$topic': ${String(message?.payload ?: ByteArray(0))}")
+                        val timestamp = System.currentTimeMillis()
+                        message?.let {
+                            val receivedMessage = ChatMessage(it.toString(), false, timestamp)
+                            //chatAdapter.submitList(chatAdapter.currentList + receivedMessage)
+                            // Add the received message to your list
+                            chatMessages.add(receivedMessage)
+                            // Update the RecyclerView
+                            updateRecyclerView()
 
-            // Disable the "Send" button and EditText
-            binding.buttonSend.isEnabled = false
-            binding.editText.isEnabled = false
+                        }
+                    }
+
+                    override fun deliveryComplete(token: IMqttDeliveryToken?) {
+                        // This method is called when a message is delivered to the server
+                    }
+                })
+            }
+            catch (e: Exception){
+                e.printStackTrace()
+                Toast.makeText(requireContext(), "MQTT not running", Toast.LENGTH_SHORT).show()
+
+                // Disable the "Send" button and EditText
+                binding.buttonSend.isEnabled = false
+                binding.editText.isEnabled = false
+            }
         }
     }
 
@@ -132,6 +140,7 @@ class ForumFragment : Fragment() {
 
         } catch (e: MqttException) {
             e.printStackTrace()
+            Toast.makeText(requireContext(), "MQTT not running", Toast.LENGTH_SHORT).show()
             // Disable the "Send" button and EditText
             binding.buttonSend.isEnabled = false
             binding.editText.isEnabled = false
