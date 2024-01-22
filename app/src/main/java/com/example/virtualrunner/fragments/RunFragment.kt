@@ -41,6 +41,18 @@ class RunFragment : Fragment() {
         return rootView
     }
 
+    private fun formatTime(seconds: Int): String {
+        val hours = seconds / 3600
+        var remainingSeconds = seconds % 3600
+        val minutes = remainingSeconds / 60
+        remainingSeconds %= 60
+
+        return when {
+            hours > 0 -> String.format("%02d:%02d:%02d", hours, minutes, remainingSeconds)
+            else -> String.format("%02d:%02d", minutes, remainingSeconds)
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -55,7 +67,9 @@ class RunFragment : Fragment() {
             binding.dateView.text = targetFormat.format(date)
         }
         if (run != null) {
-            binding.timeView.text = run.time
+            val runTime = run.time.toInt()
+            val formattedTime = formatTime(runTime)
+            binding.timeView.text = formattedTime
         }
         if (run != null) {
             binding.distanceView.text = run.distance.toString() + " m"

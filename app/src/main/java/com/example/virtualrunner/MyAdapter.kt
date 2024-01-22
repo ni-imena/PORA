@@ -24,6 +24,18 @@ class MyAdapter(private val context: Context, private val sharedViewModel: Share
 
         return RunViewHolder(binding)}
 
+    fun formatTime(seconds: Int): String {
+        val hours = seconds / 3600
+        var remainingSeconds = seconds % 3600
+        val minutes = remainingSeconds / 60
+        remainingSeconds %= 60
+
+        return when {
+            hours > 0 -> String.format("%02d:%02d:%02d", hours, minutes, remainingSeconds)
+            else -> String.format("%02d:%02d", minutes, remainingSeconds)
+        }
+    }
+
     override fun onBindViewHolder(holder: RunViewHolder, position: Int) {
         val currentItem = items[position]
         holder.binding.runName.text = currentItem.name
@@ -31,7 +43,11 @@ class MyAdapter(private val context: Context, private val sharedViewModel: Share
         val targetFormat = SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH)
         val date = originalFormat.parse(currentItem.date)
         holder.binding.date.text = targetFormat.format(date)
-        holder.binding.time.text = currentItem.time
+
+        val runTime = currentItem.time.toInt()
+        val formattedTime = formatTime(runTime)
+        holder.binding.time.text = formattedTime
+
         holder.itemView.setOnClickListener {
             Log.d("MyAdapter", "Clicked item: $currentItem")
             sharedViewModel.saveRun(currentItem)
